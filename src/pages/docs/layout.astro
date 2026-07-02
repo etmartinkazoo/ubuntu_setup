@@ -20,6 +20,9 @@ import { href } from '../../lib/site';
     ├── setup/
     │   ├── bootstrap.sh        <span class="tok-comment"># the one entry point</span>
     │   ├── packages.txt        <span class="tok-comment"># apt package list — edit freely</span>
+    │   ├── blocklist.txt       <span class="tok-comment"># distraction domains — edit freely</span>
+    │   ├── firefox/
+    │   │   └── policies.json   <span class="tok-comment"># hardened browser + uBlock policy</span>
     │   ├── lib/
     │   │   └── common.sh       <span class="tok-comment"># logging, symlink, backup helpers</span>
     │   └── steps/
@@ -28,8 +31,10 @@ import { href } from '../../lib/site';
     │       ├── 20-mise.sh
     │       ├── 30-dotfiles.sh
     │       ├── 40-privacy.sh   <span class="tok-comment"># turn off calls home</span>
+    │       ├── 45-dns.sh       <span class="tok-comment"># encrypted DNS (Quad9 DoT)</span>
     │       ├── 50-hardening.sh <span class="tok-comment"># firewall, updates, sysctl</span>
-    │       └── 60-power.sh     <span class="tok-comment"># battery + framework fixes</span>
+    │       ├── 60-power.sh     <span class="tok-comment"># battery + framework fixes</span>
+    │       └── 70-firefox.sh   <span class="tok-comment"># browser + blocklist</span>
     ├── dotfiles/
     │   ├── bashrc              <span class="tok-comment"># → ~/.bashrc</span>
     │   ├── bash/aliases.sh     <span class="tok-comment"># sourced by bashrc</span>
@@ -43,6 +48,8 @@ import { href } from '../../lib/site';
   <ul>
     <li><code>bootstrap.sh</code> — the single entry point. It sources <code>lib/common.sh</code>, then runs each file in <code>steps/</code> in order.</li>
     <li><code>packages.txt</code> — the apt package list, one per line. Comments with <code>#</code> are ignored. Edit this before running to change what's installed.</li>
+    <li><code>blocklist.txt</code> — the distraction domains, one per line. The <code>firefox</code> step compiles these into uBlock rules. See <a href={href('/docs/focus/')}>Browser &amp; focus</a>.</li>
+    <li><code>firefox/policies.json</code> — the hardened Firefox enterprise policy that force-installs uBlock Origin.</li>
     <li><code>steps/</code> — numbered stages. The prefix sets the order; each file is standalone and re-runnable.</li>
     <li><code>lib/common.sh</code> — shared shell functions: <code>log</code>, <code>link_file</code> (with backup), and <code>have</code> (command detection).</li>
   </ul>

@@ -1,0 +1,35 @@
+# ubuntu_setup — distraction blocklist
+#
+# One domain per line. These are blocked in the browser by uBlock Origin
+# (see setup/steps/70-firefox.sh, which turns each line into a `||domain^`
+# filter). Blank lines and lines starting with # are ignored.
+#
+# This list is deliberately small: the classic time-sinks, nothing more.
+# It's a starting point, not a cage — comment out anything you need for work
+# and add your own, then re-run:  ./setup/bootstrap.sh --only firefox
+#
+# To lift a block for a focused session, toggle it in the uBlock dashboard;
+# to change the baseline, edit this file.
+
+# ── social / infinite scroll ──────────────────────────────────
+facebook.com
+instagram.com
+threads.net
+twitter.com
+x.com
+tiktok.com
+snapchat.com
+
+# ── forums / aggregators ──────────────────────────────────────
+reddit.com
+# news.ycombinator.com        # uncomment to block Hacker News
+# lobste.rs
+
+# ── video (also useful for work — off by default) ─────────────
+# youtube.com
+# twitch.tv
+
+# ── news / doomscroll ─────────────────────────────────────────
+cnn.com
+foxnews.com
+nytimes.com

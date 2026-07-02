@@ -37,14 +37,6 @@ fi
 
 ok "detected Framework: $(framework_model)"
 
-# Fingerprint reader (Goodix) — present on Framework 13 and 16.
-if ! dpkg -s fprintd >/dev/null 2>&1; then
-  info "installing fprintd for the fingerprint reader"
-  sudo apt-get install -y -qq fprintd libpam-fprintd
-else
-  info "fprintd already installed"
-fi
-
 # Prefer the deepest suspend state the firmware allows (better idle battery).
 if [ -e /sys/power/mem_sleep ]; then
   info "suspend: mem_sleep present — set 'deep' in firmware for lowest idle drain"

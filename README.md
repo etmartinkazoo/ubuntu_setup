@@ -1,14 +1,17 @@
 <div align="center">
 
-# ubuntu_setup
+# Ubuntu Candor
 
 **Your whole machine, in one repository.**
 
-A beautiful, keyboard-driven, private, and hardened Ubuntu baseline for
-technical users — built for Framework laptops, runs on any x86_64 machine.
-Clone it, run `./setup/bootstrap.sh`, and be done.
+A beautiful, keyboard-driven, private, hardened, and distraction-free Ubuntu
+baseline for technical users — built for Framework laptops, runs on any
+x86_64 machine. Clone it, run `./setup/bootstrap.sh`, and be done.
 
 </div>
+
+> **Ubuntu Candor** is the name of the setup. The repository and the command
+> stay `ubuntu_setup`.
 
 ---
 
@@ -25,13 +28,16 @@ cd ubuntu_setup
 The bootstrap is **idempotent** — safe to re-run — and backs up every file it
 replaces to `~/.dotfiles-backup/` before touching it.
 
-## Five commitments
+## Six commitments
 
-- **Beautiful** — herdr themes, a considered prompt, sensible defaults.
-- **Keyboard-driven** — herdr panes and vim-style navigation; hands on the home row.
-- **Private** — telemetry, crash reporting, and connectivity pings turned off on first run.
+Principles, not a feature list — every default traces back to one of them:
+
+- **Beautiful** — considered type, colour, and defaults, light by day and dark by night.
+- **Keyboard-driven** — panes, navigation, and everyday commands a keystroke away.
+- **Private** — telemetry, crash reporting, and phone-home pings off on first run.
 - **Hardened** — default-deny firewall, automatic security updates, kernel hardening.
-- **Efficient** — kernel 7, powertop auto-tuning, and fast native tools for all-day battery.
+- **Efficient** — real power management and fast native tools for all-day battery.
+- **Focused** — a hardened browser, encrypted DNS, and a distraction blocklist you control.
 
 ## What it does
 
@@ -42,14 +48,16 @@ replaces to `~/.dotfiles-backup/` before touching it.
 | `mise` | Installs [mise](https://mise.jdx.dev) and baseline node / ruby / python runtimes |
 | `dotfiles` | Symlinks `bash`, `herdr`, and `git` config into `$HOME` |
 | `privacy` | Disables Ubuntu telemetry, crash reporting, and phone-home pings |
+| `dns` | Encrypted DNS over TLS to Quad9 via `systemd-resolved` |
 | `hardening` | Enables `ufw`, automatic security updates, and kernel/network `sysctl` |
 | `power` | powertop auto-tuning + Framework fixes (skipped on other devices) |
+| `firefox` | Hardened Firefox policy, uBlock Origin, and the distraction blocklist |
 
 ## Usage
 
 ```sh
 ./setup/bootstrap.sh              # run every step
-./setup/bootstrap.sh --only herdr # run one step (apt|herdr|mise|dotfiles|privacy|hardening|power)
+./setup/bootstrap.sh --only firefox # one step (apt|herdr|mise|dotfiles|privacy|dns|hardening|power|firefox)
 ./setup/bootstrap.sh --verify     # check the environment, change nothing
 ./setup/bootstrap.sh --restore    # relink your most recent backed-up dotfiles
 ASSUME_YES=1 ./setup/bootstrap.sh # unattended, no prompts
@@ -65,7 +73,7 @@ version onto every machine you own. The full documentation covers how.
 
 ```text
 ubuntu_setup/
-├── setup/          # the installer: bootstrap.sh, packages.txt, steps/
+├── setup/          # installer: bootstrap.sh, packages.txt, blocklist.txt, steps/
 ├── dotfiles/       # bash, herdr, git config — symlinked into $HOME
 ├── src/            # this project's website (Astro) — delete it in your fork
 └── README.md

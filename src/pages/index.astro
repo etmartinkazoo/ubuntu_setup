@@ -7,32 +7,37 @@ import { href, CLONE_URL } from '../lib/site';
 const cloneOneLiner =
   'git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh';
 
-// The five commitments — the spine of the whole project.
+// The six commitments — principles, not a feature list. The spine of the project.
 const commitments = [
   {
     n: '01',
     title: 'Beautiful',
-    body: 'A terminal that\'s a pleasure to look at. herdr themes, a considered prompt, sensible colours — light by day, dark by night.',
+    body: 'A workspace that\'s a pleasure to look at — considered type, colour, and defaults, light by day and dark by night.',
   },
   {
     n: '02',
     title: 'Keyboard-driven',
-    body: 'Hands stay on the home row. herdr panes, vim-style navigation, and aliases for the things you do a hundred times a day.',
+    body: 'Your hands stay on the home row. Panes, navigation, and the commands you run a hundred times a day are a keystroke away.',
   },
   {
     n: '03',
     title: 'Private',
-    body: 'Ubuntu stops calling home. Telemetry, crash reporting, and connectivity pings are turned off on the first run.',
+    body: 'Your machine works for you, not for anyone measuring you. Telemetry, crash reporting, and phone-home pings are off from the start.',
   },
   {
     n: '04',
     title: 'Hardened',
-    body: 'A firewall that denies inbound by default, automatic security updates, and kernel hardening — on from the start.',
+    body: 'Locked down without getting in your way — inbound denied by default, security patches automatic, the kernel tightened.',
   },
   {
     n: '05',
     title: 'Efficient',
-    body: 'Kernel 7, powertop auto-tuning, and fast native tools. More work per charge, less time waiting on your machine.',
+    body: 'Fast tools and real power management, so you get more work per charge and spend less time waiting on your machine.',
+  },
+  {
+    n: '06',
+    title: 'Focused',
+    body: 'Your attention is the point. The browser and DNS block the noise by default, with a distraction list you control.',
   },
 ];
 
@@ -80,9 +85,9 @@ const claims = [
           Your whole machine,<br />in one repository.
         </h1>
         <p class="mt-6 max-w-md text-[15px] leading-relaxed text-ink-soft">
-          <span class="font-mono text-ink">ubuntu_setup</span> turns a fresh
-          Ubuntu install into a workstation that's beautiful, keyboard-driven,
-          private, and hardened — in one command. Clone it, run
+          <span class="font-semibold text-ink">Ubuntu Candor</span> turns a fresh
+          Ubuntu install into a workstation that's beautiful, private, hardened,
+          and free of distraction — in one command. Clone it, run
           <span class="font-mono text-ubuntu-ink">./setup/bootstrap.sh</span>,
           and be done.
         </p>
@@ -129,14 +134,14 @@ const claims = [
     </div>
   </section>
 
-  <!-- ── The five commitments ─────────────────────────────── -->
+  <!-- ── The six commitments ──────────────────────────────── -->
   <section class="border-b border-line">
     <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.6fr]">
         <div class="lg:sticky lg:top-24 lg:self-start">
           <p class="eyebrow">What it stands for</p>
           <h2 class="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Five commitments.
+            Six commitments.
           </h2>
           <p class="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-soft">
             Not a pile of features — a point of view about what a working
@@ -238,14 +243,14 @@ const claims = [
           Built for Framework. At home on anything.
         </h2>
         <p class="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
-          On a Framework 13 or 16 the bootstrap configures the fingerprint
-          reader and the deepest suspend state for real all-day battery. On any
-          other machine those steps skip — the power tuning, privacy, and
-          hardening all install the same.
+          On a Framework 13 or 16 the bootstrap points you at the deepest
+          suspend state for real all-day battery. On any other machine that step
+          skips — the power tuning, privacy, hardening, and focus setup all
+          install the same.
         </p>
         <ul class="prose mt-6 max-w-md">
           <li>powertop auto-tuning on every boot, for more work per charge.</li>
-          <li>Fingerprint reader set up on Framework; skipped elsewhere.</li>
+          <li>Deepest suspend state flagged on Framework for lower idle drain.</li>
           <li>Every hardware step guarded by a check — safe on any x86_64 device.</li>
         </ul>
       </div>
@@ -271,6 +276,74 @@ const claims = [
             ))
           }
         </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Focus / browser ──────────────────────────────────── -->
+  <section class="border-b border-line">
+    <div class="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
+      <div>
+        <p class="eyebrow tick">For people who ship</p>
+        <h2 class="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
+          Focus is a setting. This turns it on.
+        </h2>
+        <p class="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
+          The browser ships hardened and quiet — telemetry off, no sponsored
+          tiles, no onboarding. uBlock Origin is installed and enforced. Every
+          DNS lookup leaves the machine encrypted, through a resolver that drops
+          known-malicious domains.
+        </p>
+        <p class="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft">
+          Then there's the blocklist — a plain file of the classic time-sinks.
+          Each domain becomes a uBlock rule at install. It's comprehensive
+          enough to matter and small enough to read in one sitting: comment out
+          what you need, add what you don't, re-run.
+        </p>
+        <div class="mt-7">
+          <a
+            href={href('/docs/focus/')}
+            class="font-mono text-xs uppercase tracking-wider text-ubuntu-ink underline decoration-line-strong underline-offset-4 hover:decoration-ubuntu"
+          >
+            How the blocklist works →
+          </a>
+        </div>
+      </div>
+
+      <div class="border border-line bg-panel">
+        <div class="flex items-center justify-between border-b border-line px-6 py-4">
+          <span class="eyebrow">setup/blocklist.txt</span>
+          <span class="font-mono text-[11px] text-ink-faint">10 blocked · 4 off</span>
+        </div>
+        <ul class="divide-y divide-line font-mono text-[13px]">
+          {
+            [
+              ['facebook.com', true],
+              ['instagram.com', true],
+              ['x.com', true],
+              ['tiktok.com', true],
+              ['reddit.com', true],
+              ['news.ycombinator.com', false],
+              ['youtube.com', false],
+            ].map(([domain, blocked]) => (
+              <li class="flex items-center gap-3 px-6 py-2.5">
+                <span
+                  class:list={[
+                    'inline-block h-1.5 w-1.5',
+                    blocked ? 'bg-ubuntu' : 'bg-transparent ring-1 ring-line-strong',
+                  ]}
+                />
+                <span class:list={[blocked ? 'text-ink' : 'text-ink-faint line-through']}>
+                  {domain}
+                </span>
+                {!blocked && <span class="ml-auto text-[11px] text-ink-faint"># off</span>}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="border-t border-line px-6 py-3 font-mono text-[11px] text-ink-faint">
+          edit the file · ./setup/bootstrap.sh --only firefox
+        </div>
       </div>
     </div>
   </section>

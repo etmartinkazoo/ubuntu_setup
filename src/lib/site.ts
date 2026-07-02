@@ -7,6 +7,7 @@ export function href(path: string): string {
   return `${BASE}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+export const BRAND = 'Ubuntu Candor';
 export const REPO = 'etmartinkazoo/ubuntu_setup';
 export const REPO_URL = `https://github.com/${REPO}`;
 export const CLONE_URL = `https://github.com/${REPO}.git`;
@@ -28,6 +29,7 @@ export const docsNav = [
     section: 'Reference',
     items: [
       { label: "What's inside", path: '/docs/whats-inside/' },
+      { label: 'Browser & focus', path: '/docs/focus/' },
       { label: 'Repository layout', path: '/docs/layout/' },
     ],
   },

@@ -133,6 +133,25 @@ import { href } from '../../lib/site';
     /usr/sbin/powertop --auto-tune
   </Code>
 
+  <h2 id="focus">Browser &amp; focus</h2>
+  <p>
+    The <code>firefox</code> and <code>dns</code> steps set up a browser and
+    network tuned for focus: a hardened, quiet Firefox policy, uBlock Origin
+    force-installed, encrypted DNS over TLS to Quad9, and a distraction
+    blocklist compiled from <code>setup/blocklist.txt</code>.
+  </p>
+  <ul>
+    <li><strong>Firefox</strong> — telemetry, sponsored tiles, and onboarding off via enterprise policy.</li>
+    <li><strong>uBlock Origin</strong> — force-installed and enabled on first launch.</li>
+    <li><strong>Encrypted DNS</strong> — every lookup leaves the machine over TLS, malicious domains dropped.</li>
+    <li><strong>Blocklist</strong> — a small, tunable list of time-sinks, enforced in the browser.</li>
+  </ul>
+  <p>
+    This is the deepest part of the setup — see
+    <a href={href('/docs/focus/')}>Browser &amp; focus</a> for exactly how it
+    works and how to tune it.
+  </p>
+
   <h2 id="packages">apt packages</h2>
   <p>
     A curated set of command-line tools, installed in one pass. The list lives
@@ -154,10 +173,9 @@ import { href } from '../../lib/site';
   <h2 id="framework">Framework fixes</h2>
   <p>
     When the bootstrap detects a Framework 13 or 16 mainboard, the
-    <code>power</code> step configures the fingerprint reader and points you at
-    the deepest suspend state for the best idle battery. On any other hardware
-    this part is skipped entirely — it's guarded behind a device check, so the
-    repo is safe to run anywhere.
+    <code>power</code> step points you at the deepest suspend state for the best
+    idle battery. On any other hardware this part is skipped entirely — it's
+    guarded behind a device check, so the repo is safe to run anywhere.
   </p>
 
   <p>

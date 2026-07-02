@@ -6,7 +6,7 @@
 # Usage:
 #   ./setup/bootstrap.sh              run every step (idempotent)
 #   ./setup/bootstrap.sh --only NAME  run one step (apt|herdr|mise|dotfiles|
-#                                      privacy|hardening|power)
+#                                      privacy|dns|hardening|power|firefox)
 #   ./setup/bootstrap.sh --verify     check the environment, change nothing
 #   ./setup/bootstrap.sh --restore    relink your most recent backed-up dotfiles
 #   ./setup/bootstrap.sh --help
@@ -29,10 +29,12 @@ declare -A STEP=(
   [mise]="20-mise.sh"
   [dotfiles]="30-dotfiles.sh"
   [privacy]="40-privacy.sh"
+  [dns]="45-dns.sh"
   [hardening]="50-hardening.sh"
   [power]="60-power.sh"
+  [firefox]="70-firefox.sh"
 )
-ORDER=(apt herdr mise dotfiles privacy hardening power)
+ORDER=(apt herdr mise dotfiles privacy dns hardening power firefox)
 
 run_step() {
   local name="$1"
@@ -70,6 +72,8 @@ do_verify() {
   else
     warn "firewall not active"; fail=1
   fi
+  if [ -f /etc/firefox/policies/policies.json ]; then ok "firefox policy installed"; else warn "firefox policy missing"; fail=1; fi
+  if resolvectl status 2>/dev/null | grep -qi 'DNSOverTLS.*yes\|+DNSOverTLS'; then ok "encrypted DNS active"; else info "encrypted DNS not detected"; fi
   if is_framework; then info "hardware: $(framework_model)"; fi
   echo
   [ "$fail" -eq 0 ] && ok "environment matches the repo" || die "environment is incomplete — run ./setup/bootstrap.sh"

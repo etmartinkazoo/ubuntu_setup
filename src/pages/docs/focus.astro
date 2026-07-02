@@ -1,0 +1,129 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
+import Code from '../../components/Code.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="Browser & focus"
+  eyebrow="Documentation · Reference"
+  summary="A quiet, hardened browser, encrypted DNS, and a distraction blocklist you own — for people who are serious about getting work done."
+>
+  <p>
+    Attention is the scarce resource. Ubuntu Candor treats it that way: the
+    browser ships hardened and silent, DNS leaves the machine encrypted, and a
+    small, blunt blocklist keeps the classic time-sinks one keystroke from gone.
+    All of it is plain configuration you can read and tune.
+  </p>
+
+  <h2 id="firefox">Firefox defaults</h2>
+  <p>
+    The <code>firefox</code> step installs an enterprise policy at
+    <code>/etc/firefox/policies/policies.json</code>. It applies to every
+    profile on the next launch — no clicking through settings:
+  </p>
+  <ul>
+    <li><strong>No telemetry or studies.</strong> Usage data and Mozilla experiments are off.</li>
+    <li><strong>No noise on the new tab.</strong> Sponsored tiles, Pocket, and snippets are gone.</li>
+    <li><strong>No onboarding or "what's new".</strong> Feature nags and recommendation prompts are disabled.</li>
+    <li><strong>No first-run or post-update pages.</strong> You open the browser, you get to work.</li>
+  </ul>
+  <p>
+    None of this is locked — it's a baseline. Edit
+    <code>setup/firefox/policies.json</code> and re-run to change any of it.
+    Every key is documented in
+    <a href="https://mozilla.github.io/policy-templates/">Mozilla's policy templates</a>.
+  </p>
+
+  <h2 id="ublock">uBlock Origin</h2>
+  <p>
+    <a href="https://github.com/gorhill/uBlock">uBlock Origin</a> is
+    force-installed through the same policy, so it's present and enabled on
+    first launch — nothing to install by hand:
+  </p>
+  <Code caption="setup/firefox/policies.json">
+    <span class="tok-comment">"ExtensionSettings"</span>: {'{'}
+      <span class="tok-comment">"uBlock0@raymondhill.net"</span>: {'{'}
+        <span class="tok-comment">"installation_mode"</span>: <span class="tok-flag">"force_installed"</span>,
+        <span class="tok-comment">"install_url"</span>: <span class="tok-flag">"https://addons.mozilla.org/…/ublock-origin/latest.xpi"</span>
+      {'}'}
+    {'}'}
+  </Code>
+  <p>
+    Its default filter lists handle ads and trackers. The distraction blocklist
+    below is layered on top as your own rules.
+  </p>
+
+  <h2 id="dns">Encrypted DNS</h2>
+  <p>
+    The <code>dns</code> step points <code>systemd-resolved</code> at
+    <a href="https://quad9.net">Quad9</a> over TLS, so every lookup on the
+    machine — not just the browser's — is encrypted in transit and filtered for
+    known-malicious domains:
+  </p>
+  <Code caption="/etc/systemd/resolved.conf.d/10-candor-dns.conf">
+    [Resolve]
+    DNS=9.9.9.9#dns.quad9.net
+    DNSOverTLS=yes
+  </Code>
+  <p>
+    Firefox's own DNS-over-HTTPS is deliberately turned <em>off</em> in the
+    policy, so the browser defers to this system resolver instead of quietly
+    sending your lookups somewhere else. Prefer a different provider? Change the
+    <code>DNS=</code> line — Cloudflare, Mullvad, and NextDNS all work.
+  </p>
+
+  <h2 id="blocklist">The distraction blocklist</h2>
+  <p>
+    This is the heart of the focus setup, and it's intentionally simple. The
+    blocklist is a plain text file — one domain per line:
+  </p>
+  <Code caption="setup/blocklist.txt">
+    <span class="tok-comment"># social / infinite scroll</span>
+    facebook.com
+    instagram.com
+    x.com
+    tiktok.com
+
+    <span class="tok-comment"># forums / aggregators</span>
+    reddit.com
+    <span class="tok-comment"># news.ycombinator.com        ← commented out = not blocked</span>
+  </Code>
+
+  <h3 id="how-it-works">How it works</h3>
+  <p>
+    At install, the <code>firefox</code> step turns each line into a uBlock
+    static filter — <code>facebook.com</code> becomes
+    <code>||facebook.com^</code> — and writes them into uBlock's managed
+    settings inside the Firefox policy. uBlock reads them as your user filters
+    on launch. There's no background service and no separate app: the file is
+    the source of truth, and the browser enforces it.
+  </p>
+  <Code>
+    <span class="tok-comment"># setup/blocklist.txt  →  compiled into the policy</span>
+    facebook.com   →   <span class="tok-flag">||facebook.com^</span>
+    x.com          →   <span class="tok-flag">||x.com^</span>
+  </Code>
+
+  <h3 id="tuning">Tuning it</h3>
+  <p>
+    The list is deliberately small — comprehensive enough to matter, short
+    enough to read in one sitting. It's a starting point, not a verdict:
+  </p>
+  <ul>
+    <li><strong>Need a site for work?</strong> Comment it out with <code>#</code> or delete the line.</li>
+    <li><strong>Want more blocked?</strong> Add domains, one per line.</li>
+    <li><strong>Just this once?</strong> Toggle a rule in the uBlock dashboard for a single session without touching the file.</li>
+  </ul>
+  <p>Apply your changes by re-running the one step:</p>
+  <div class="not-prose my-6">
+    <CopyCommand command="./setup/bootstrap.sh --only firefox" />
+  </div>
+
+  <p>
+    Because the file lives in the repo, your focus policy versions and travels
+    with the rest of your setup — see
+    <a href={href('/docs/customizing/')}>Customizing</a>.
+  </p>
+</Docs>
