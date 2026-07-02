@@ -59,13 +59,38 @@ const steps = [
   },
 ];
 
-const stack = [
-  { k: 'bash', v: 'Aliases, safety rails, and git helpers wired into an interactive shell.' },
-  { k: 'herdr', v: 'Keyboard-driven, agent-aware multiplexer. One Rust binary — no account, no telemetry.' },
-  { k: 'mise', v: 'Per-project runtimes for node, ruby, and python — no version managers to babysit.' },
-  { k: 'git', v: 'Sensible defaults with the GitHub CLI wired in as the credential helper.' },
-  { k: 'ufw', v: 'A host firewall that denies inbound by default, enabled on the first run.' },
-  { k: 'apt', v: 'A curated package set: build tools, ripgrep, fd, jq, htop, and friends.' },
+// Real excerpts from the dotfiles — verbatim, so the page reflects the repo.
+const configs = [
+  {
+    file: '~/.config/ubuntu_setup/aliases.sh',
+    why: 'Safety rails, and one command to ship.',
+    lines: [
+      ["alias rm=", "'rm -I'", "        # confirm deletes"],
+      ["alias gs=", "'git status -sb'", ""],
+      ["gp() { git add . &&", "", ""],
+      ["  git commit -m ", '"$1"', " && git push }"],
+    ],
+  },
+  {
+    file: '~/.config/herdr/config.toml',
+    why: 'Keyboard-driven. No phone-home.',
+    lines: [
+      ["prefix = ", '"ctrl+a"', ""],
+      ["focus_pane_left = ", '"prefix+h"', "  # vim nav"],
+      ["split_vertical = ", '"prefix+v"', ""],
+      ["version_check = ", "false", "        # no pings"],
+    ],
+  },
+  {
+    file: '~/.gitconfig',
+    why: 'Modern git, nothing to configure.',
+    lines: [
+      ["[pull]  rebase = ", "true", ""],
+      ["[push]  autoSetupRemote = ", "true", ""],
+      ["[init]  defaultBranch = ", "main", ""],
+      ["[fetch] prune = ", "true", ""],
+    ],
+  },
 ];
 
 const claims = [
@@ -195,42 +220,52 @@ const claims = [
     </div>
   </section>
 
-  <!-- ── Stack ────────────────────────────────────────────── -->
+  <!-- ── The configuration ────────────────────────────────── -->
   <section class="border-b border-line">
     <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
       <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div class="max-w-2xl">
-          <p class="eyebrow">The stack</p>
+          <p class="eyebrow">The configuration</p>
           <h2 class="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Curated, not exhaustive.
+            Sensible defaults, in plain files.
           </h2>
           <p class="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft">
-            Every tool earns its place. These are the defaults a working
-            developer reaches for daily — nothing you'll spend a weekend
-            ripping back out.
+            No framework, no DSL. The value isn't a list of packages — it's the
+            choices already made for you, each a line you can read and change.
+            Straight from the repo:
           </p>
         </div>
         <a
           href={href('/docs/whats-inside/')}
           class="shrink-0 font-mono text-xs uppercase tracking-wider text-ubuntu-ink underline decoration-line-strong underline-offset-4 hover:decoration-ubuntu"
         >
-          Full inventory →
+          Every default →
         </a>
       </div>
 
-      <div class="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-12 grid gap-px border border-line bg-line lg:grid-cols-3">
         {
-          stack.map((s) => (
-            <div class="group bg-paper p-6 transition-colors hover:bg-panel">
-              <div class="flex items-center gap-2">
-                <span class="inline-block h-1.5 w-1.5 bg-ubuntu opacity-0 transition-opacity group-hover:opacity-100" />
-                <span class="font-mono text-sm font-medium text-ink">{s.k}</span>
+          configs.map((c) => (
+            <div class="flex flex-col bg-ink">
+              <div class="border-b border-white/10 px-5 py-3">
+                <span class="font-mono text-[11px] text-white/40">{c.file}</span>
               </div>
-              <p class="mt-3 text-[13.5px] leading-relaxed text-ink-soft">{s.v}</p>
+              <pre class="flex-1 overflow-x-auto px-5 py-4 font-mono text-[12.5px] leading-[1.8] text-[#e9e7e2]">{c.lines.map((l) => (
+                <div><span>{l[0]}</span><span class="text-ubuntu">{l[1]}</span><span class="text-white/45">{l[2]}</span></div>
+              ))}</pre>
+              <div class="border-t border-white/10 px-5 py-3">
+                <span class="text-[12.5px] text-white/55">{c.why}</span>
+              </div>
             </div>
           ))
         }
       </div>
+
+      <p class="mt-6 text-[13.5px] leading-relaxed text-ink-faint">
+        Packages are secondary — a small, curated apt set (ripgrep, fd, jq,
+        tree, htop) and nothing you didn't ask for.
+        <a href={href('/docs/whats-inside/#packages')} class="text-ubuntu-ink underline decoration-line-strong underline-offset-2 hover:decoration-ubuntu">See the list</a>.
+      </p>
     </div>
   </section>
 
@@ -313,7 +348,7 @@ const claims = [
       <div class="border border-line bg-panel">
         <div class="flex items-center justify-between border-b border-line px-6 py-4">
           <span class="eyebrow">setup/blocklist.txt</span>
-          <span class="font-mono text-[11px] text-ink-faint">10 blocked · 4 off</span>
+          <span class="font-mono text-[11px] text-ink-faint">11 blocked · 4 off</span>
         </div>
         <ul class="divide-y divide-line font-mono text-[13px]">
           {

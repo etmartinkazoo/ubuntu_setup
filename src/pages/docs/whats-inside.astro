@@ -25,12 +25,13 @@ import { href } from '../../lib/site';
     alias cp=<span class="tok-flag">'cp -i'</span>
     alias mv=<span class="tok-flag">'mv -i'</span>
 
-    <span class="tok-comment"># commit + push in one move: gp "message" branch</span>
-    gp() {'{'} git add . && git commit -m <span class="tok-flag">"$1"</span> && git push origin <span class="tok-flag">"$2"</span>; {'}'}
+    <span class="tok-comment"># commit + push in one move: gp "message" [branch]</span>
+    gp() {'{'} git add . && git commit -m <span class="tok-flag">"$1"</span> && git push origin <span class="tok-flag">"${'{'}2:-$(git rev-parse --abbrev-ref HEAD){'}'}"</span>; {'}'}
   </Code>
   <ul>
     <li><code>ll</code>, <code>la</code>, <code>l</code> — the usual <code>ls</code> shorthands, with colour.</li>
-    <li><code>gp "msg" branch</code> — stage, commit, and push in one command.</li>
+    <li><code>gp "msg" [branch]</code> — stage, commit, and push; branch defaults to the current one.</li>
+    <li><code>gs</code>, <code>gd</code>, <code>gl</code> — short status, diff, and a compact log graph.</li>
     <li>History that ignores duplicates and appends across sessions.</li>
   </ul>
 

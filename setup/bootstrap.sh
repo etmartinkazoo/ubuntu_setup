@@ -97,7 +97,7 @@ do_restore() {
 }
 
 banner() {
-  printf '\n%s  ubuntu_setup%s  %s— a power-user Ubuntu baseline%s\n\n' \
+  printf '\n%s  Ubuntu Candor%s  %s— a private, focused Ubuntu baseline%s\n\n' \
     "$C_BOLD" "$C_RESET" "$C_DIM" "$C_RESET"
 }
 

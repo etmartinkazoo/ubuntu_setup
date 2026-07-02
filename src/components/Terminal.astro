@@ -5,7 +5,7 @@ interface Props {
   label?: string;
   class?: string;
 }
-const { label = 'tedmartin@framework: ~', class: cls = '' } = Astro.props;
+const { label = 'you@ubuntu: ~/ubuntu_setup', class: cls = '' } = Astro.props;
 ---
 
 <div class:list={['group border border-ink bg-ink text-[#e9e7e2] shadow-[0_1px_0_0_#d5d2cb]', cls]}>
@@ -30,14 +30,19 @@ const { label = 'tedmartin@framework: ~', class: cls = '' } = Astro.props;
 
 <script>
   const COMMAND = 'git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh';
+  // These are the actual stage lines bootstrap.sh prints (one per step).
   const OUTPUT = [
-    '→ detecting hardware ....... Framework 13 · generic-ok',
-    '→ herdr + mise ............. installed',
-    '→ phone-home disabled ...... ubuntu-report, whoopsie, apport',
-    '→ firewall + encrypted dns . ufw · quad9 (DoT)',
-    '→ focus: uBlock + blocklist  10 domains blocked',
-    '→ dotfiles linked .......... bash · herdr · git',
-    '✓ done in 3m 04s — restart your shell',
+    '→ preflight',
+    '→ apt packages',
+    '→ herdr',
+    '→ mise runtimes',
+    '→ dotfiles',
+    '→ privacy — silencing calls home',
+    '→ encrypted DNS',
+    '→ hardening',
+    '→ power & efficiency',
+    '→ firefox — defaults, uBlock, blocklist',
+    '✓ done — restart your shell:  exec bash',
   ];
 
   const typed = document.getElementById('term-typed');
