@@ -31,11 +31,12 @@ const { label = 'tedmartin@framework: ~', class: cls = '' } = Astro.props;
 <script>
   const COMMAND = 'git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh';
   const OUTPUT = [
-    '→ detecting hardware ............ Framework 13 (AMD)',
-    '→ apt packages ................. 41 installed',
-    '→ mise runtimes ................ node, ruby, python',
-    '→ dotfiles linked .............. bash · tmux · git',
-    '✓ done in 3m 12s — restart your shell',
+    '→ detecting hardware ....... Framework 13 · generic-ok',
+    '→ herdr + mise ............. installed',
+    '→ phone-home disabled ...... ubuntu-report, whoopsie, apport',
+    '→ firewall + auto-updates .. ufw active',
+    '→ dotfiles linked .......... bash · herdr · git',
+    '✓ done in 2m 51s — restart your shell',
   ];
 
   const typed = document.getElementById('term-typed');

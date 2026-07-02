@@ -7,7 +7,7 @@ import { href } from '../../lib/site';
 <Docs
   title="What's inside"
   eyebrow="Documentation · Reference"
-  summary="Every tool and default the bootstrap configures, and why it's there."
+  summary="Every tool, default, and system change the bootstrap makes, and why it's there."
 >
   <p>
     Nothing here is a surprise. This page is the complete inventory — if the
@@ -34,19 +34,31 @@ import { href } from '../../lib/site';
     <li>History that ignores duplicates and appends across sessions.</li>
   </ul>
 
-  <h2 id="tmux">tmux</h2>
+  <h2 id="herdr">herdr</h2>
   <p>
-    A terminal multiplexer configured for people who keep many panes open. The
-    prefix is <code>C-a</code>, panes navigate like vim, and the mouse works:
+    <a href="https://herdr.dev">herdr</a> is the terminal multiplexer — a
+    keyboard-driven, agent-aware replacement for tmux. It's a single Rust
+    binary with <strong>no account and no telemetry</strong>, which is exactly
+    why it's here. The prefix is <code>C-a</code>, panes navigate like vim, and
+    it ships beautiful themes:
   </p>
-  <Code caption="dotfiles/tmux.conf — highlights">
-    set -g prefix C-a           <span class="tok-comment"># screen-style prefix</span>
-    bind | split-window -h      <span class="tok-comment"># intuitive splits</span>
-    bind - split-window -v
-    bind h select-pane -L       <span class="tok-comment"># vim pane navigation</span>
-    set -g mouse on
-    set -g history-limit 50000  <span class="tok-comment"># deep scrollback</span>
+  <Code caption="dotfiles/herdr/config.toml — highlights">
+    [keys]
+    prefix = <span class="tok-flag">"ctrl+a"</span>          <span class="tok-comment"># screen-style prefix</span>
+    focus_pane_left = <span class="tok-flag">"prefix+h"</span> <span class="tok-comment"># vim pane navigation</span>
+    split_vertical = <span class="tok-flag">"prefix+v"</span>
+
+    [update]
+    version_check = false        <span class="tok-comment"># privacy: no update pings</span>
+
+    [theme]
+    name = <span class="tok-flag">"vesper"</span>
+    auto_switch = true           <span class="tok-comment"># light by day, dark by night</span>
   </Code>
+  <p>
+    See every option with <code>herdr --default-config</code>. Update on your
+    own terms with <code>herdr update</code>.
+  </p>
 
   <h2 id="runtimes">mise</h2>
   <p>
@@ -64,8 +76,62 @@ import { href } from '../../lib/site';
     Git ships with sensible defaults and uses the
     <a href="https://cli.github.com">GitHub CLI</a> as its credential helper, so
     you authenticate once with <code>gh auth login</code> and never paste a token
-    again. Your name and email are prompted for on first run.
+    again. Your name and email go in an untracked <code>~/.gitconfig.local</code>.
   </p>
+
+  <h2 id="privacy">Privacy — turning off calls home</h2>
+  <p>
+    A stock Ubuntu install phones home in several small ways. The
+    <code>privacy</code> step turns them off — all reversible:
+  </p>
+  <Code caption="setup/steps/40-privacy.sh">
+    <span class="tok-comment"># remove Canonical metrics and crash reporting</span>
+    apt purge ubuntu-report popularity-contest apport whoopsie
+
+    <span class="tok-comment"># stop the login "news" fetch and the NetworkManager ping</span>
+    /etc/default/motd-news                 ENABLED=0
+    /etc/NetworkManager/conf.d/…           connectivity enabled=false
+  </Code>
+  <ul>
+    <li><strong>ubuntu-report</strong> and <strong>popularity-contest</strong> — usage and package metrics, removed.</li>
+    <li><strong>apport</strong> / <strong>whoopsie</strong> — crash reports to Canonical, removed.</li>
+    <li><strong>motd-news</strong> — the remote "news" line on login, disabled.</li>
+    <li><strong>connectivity check</strong> — NetworkManager's ping to a Canonical endpoint, disabled.</li>
+  </ul>
+
+  <h2 id="hardening">Security hardening</h2>
+  <p>
+    A sensible baseline that won't get in your way. The <code>hardening</code>
+    step brings up a firewall, turns on automatic security updates, and applies
+    a short list of kernel and network <code>sysctl</code> settings:
+  </p>
+  <Code caption="setup/steps/50-hardening.sh">
+    ufw default deny incoming    <span class="tok-comment"># nothing gets in unless you allow it</span>
+    ufw default allow outgoing
+    ufw enable
+
+    <span class="tok-comment"># /etc/sysctl.d/90-ubuntu-setup-hardening.conf</span>
+    kernel.kptr_restrict = 2     <span class="tok-comment"># hide kernel pointers</span>
+    kernel.dmesg_restrict = 1
+    net.ipv4.tcp_syncookies = 1
+  </Code>
+  <p>
+    <strong>unattended-upgrades</strong> is enabled so security patches land
+    automatically. Nothing here opens a port or exposes a service — it only
+    tightens the defaults.
+  </p>
+
+  <h2 id="efficiency">Efficiency &amp; battery</h2>
+  <p>
+    On Ubuntu 26.04 with a kernel 7 base, the <code>power</code> step installs
+    a boot-time <a href="https://github.com/fenrus75/powertop">powertop</a>
+    auto-tune service so the machine uses the kernel's power-saving paths on
+    every boot — real gains in idle battery life:
+  </p>
+  <Code>
+    <span class="tok-comment"># runs once at every boot via a oneshot systemd unit</span>
+    /usr/sbin/powertop --auto-tune
+  </Code>
 
   <h2 id="packages">apt packages</h2>
   <p>
@@ -76,16 +142,22 @@ import { href } from '../../lib/site';
     build-essential    <span class="tok-comment"># compilers and make</span>
     ripgrep fd-find    <span class="tok-comment"># fast search</span>
     jq                 <span class="tok-comment"># JSON on the command line</span>
-    htop               <span class="tok-comment"># process viewer</span>
-    tmux git curl      <span class="tok-comment"># the essentials</span>
+    ufw                <span class="tok-comment"># firewall</span>
+    powertop           <span class="tok-comment"># power tuning</span>
+    git curl           <span class="tok-comment"># the essentials</span>
   </Code>
+  <p>
+    <em>herdr isn't an apt package</em> — it's installed by the
+    <code>herdr</code> step from <code>herdr.dev/install.sh</code>.
+  </p>
 
   <h2 id="framework">Framework fixes</h2>
   <p>
-    When the bootstrap detects a Framework 13 or 16 mainboard, it applies a
-    small set of tweaks for suspend behaviour, the fingerprint reader, and
-    fractional scaling. On any other hardware, this stage is skipped entirely —
-    it's guarded behind a device check, so the repo is safe to run anywhere.
+    When the bootstrap detects a Framework 13 or 16 mainboard, the
+    <code>power</code> step configures the fingerprint reader and points you at
+    the deepest suspend state for the best idle battery. On any other hardware
+    this part is skipped entirely — it's guarded behind a device check, so the
+    repo is safe to run anywhere.
   </p>
 
   <p>

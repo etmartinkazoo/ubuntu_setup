@@ -1,6 +1,9 @@
 # apt packages installed by setup/steps/10-apt.sh
 # One per line. Blank lines and lines starting with # are ignored.
 # Edit freely — re-running the bootstrap installs additions and leaves the rest.
+#
+# Note: herdr (the terminal multiplexer) is not an apt package — it's installed
+# by setup/steps/25-herdr.sh from https://herdr.dev/install.sh.
 
 # ── build & core ──────────────────────────────────────────────
 build-essential
@@ -10,7 +13,6 @@ wget
 ca-certificates
 
 # ── terminal ──────────────────────────────────────────────────
-tmux
 bash-completion
 
 # ── search & inspect ──────────────────────────────────────────
@@ -19,6 +21,13 @@ fd-find
 jq
 tree
 htop
+
+# ── privacy & security ────────────────────────────────────────
+ufw                    # host firewall (configured by 50-hardening.sh)
+unattended-upgrades    # automatic security updates
+
+# ── efficiency ────────────────────────────────────────────────
+powertop               # power tuning (applied by 60-power.sh)
 
 # ── misc quality of life ──────────────────────────────────────
 unzip

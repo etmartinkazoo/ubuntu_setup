@@ -40,21 +40,29 @@ import Code from '../../components/Code.astro';
     apart from real files:
   </p>
   <Code>
-    <span class="tok-prompt">$</span> ls -l ~/.tmux.conf
-    ~/.tmux.conf -> ~/ubuntu_setup/dotfiles/tmux.conf   <span class="tok-comment"># a symlink</span>
+    <span class="tok-prompt">$</span> ls -l ~/.config/herdr/config.toml
+    …/herdr/config.toml -> ~/ubuntu_setup/dotfiles/herdr/config.toml   <span class="tok-comment"># a symlink</span>
 
-    <span class="tok-prompt">$</span> rm ~/.tmux.conf   <span class="tok-comment"># removes only the link, never the repo</span>
+    <span class="tok-prompt">$</span> rm ~/.config/herdr/config.toml   <span class="tok-comment"># removes only the link, never the repo</span>
   </Code>
 
-  <h2 id="packages">Packages</h2>
+  <h2 id="packages">Packages &amp; system changes</h2>
   <p>
-    The bootstrap installs apt packages but deliberately never removes them —
-    uninstalling software you might depend on is exactly the kind of surprise
-    this project avoids. If you want a package gone, remove it explicitly:
+    The bootstrap never removes a tool it installed — uninstalling software you
+    might depend on is exactly the kind of surprise this project avoids. If you
+    want one gone, remove it explicitly:
   </p>
   <div class="not-prose my-6">
     <CopyCommand command="sudo apt remove ripgrep" />
   </div>
+  <p>
+    The privacy step is the one place that removes packages (Canonical's
+    telemetry and crash reporting). If you want any of them back, reinstall
+    normally — e.g. <code>sudo apt install apport</code>. The firewall and
+    sysctl changes live in <code>/etc/ufw</code> and
+    <code>/etc/sysctl.d/90-ubuntu-setup-hardening.conf</code>; disable them with
+    <code>sudo ufw disable</code> and by removing that file.
+  </p>
 
   <h2 id="delete">Delete the repo</h2>
   <p>

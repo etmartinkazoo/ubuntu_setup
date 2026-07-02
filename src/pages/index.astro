@@ -7,6 +7,35 @@ import { href, CLONE_URL } from '../lib/site';
 const cloneOneLiner =
   'git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh';
 
+// The five commitments — the spine of the whole project.
+const commitments = [
+  {
+    n: '01',
+    title: 'Beautiful',
+    body: 'A terminal that\'s a pleasure to look at. herdr themes, a considered prompt, sensible colours — light by day, dark by night.',
+  },
+  {
+    n: '02',
+    title: 'Keyboard-driven',
+    body: 'Hands stay on the home row. herdr panes, vim-style navigation, and aliases for the things you do a hundred times a day.',
+  },
+  {
+    n: '03',
+    title: 'Private',
+    body: 'Ubuntu stops calling home. Telemetry, crash reporting, and connectivity pings are turned off on the first run.',
+  },
+  {
+    n: '04',
+    title: 'Hardened',
+    body: 'A firewall that denies inbound by default, automatic security updates, and kernel hardening — on from the start.',
+  },
+  {
+    n: '05',
+    title: 'Efficient',
+    body: 'Kernel 7, powertop auto-tuning, and fast native tools. More work per charge, less time waiting on your machine.',
+  },
+];
+
 const steps = [
   {
     n: '01',
@@ -16,7 +45,7 @@ const steps = [
   {
     n: '02',
     title: 'Bootstrap',
-    body: 'Run one script. It is idempotent — detects your hardware, installs packages, and symlinks the dotfiles.',
+    body: 'Run one script. It is idempotent — installs tools, hardens the system, and symlinks the dotfiles.',
   },
   {
     n: '03',
@@ -27,17 +56,17 @@ const steps = [
 
 const stack = [
   { k: 'bash', v: 'Aliases, safety rails, and git helpers wired into an interactive shell.' },
-  { k: 'tmux', v: 'C-a prefix, vim pane navigation, mouse, and a 50k-line scrollback.' },
+  { k: 'herdr', v: 'Keyboard-driven, agent-aware multiplexer. One Rust binary — no account, no telemetry.' },
   { k: 'mise', v: 'Per-project runtimes for node, ruby, and python — no version managers to babysit.' },
   { k: 'git', v: 'Sensible defaults with the GitHub CLI wired in as the credential helper.' },
+  { k: 'ufw', v: 'A host firewall that denies inbound by default, enabled on the first run.' },
   { k: 'apt', v: 'A curated package set: build tools, ripgrep, fd, jq, htop, and friends.' },
-  { k: 'gh', v: 'The GitHub CLI, authenticated once and reused everywhere.' },
 ];
 
 const claims = [
-  { stat: '1', label: 'command to a working machine' },
-  { stat: '0', label: 'hidden global state' },
-  { stat: '~3m', label: 'from clone to prompt' },
+  { stat: '1', label: 'command to a hardened machine' },
+  { stat: '0', label: 'calls home, by default' },
+  { stat: '26.04', label: 'Ubuntu · kernel 7' },
 ];
 ---
 
@@ -46,15 +75,16 @@ const claims = [
   <section class="border-b border-line">
     <div class="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:py-24">
       <div>
-        <p class="eyebrow tick">Ubuntu 24.04 · Framework laptops</p>
+        <p class="eyebrow tick">Ubuntu 26.04 · built for Framework · runs anywhere</p>
         <h1 class="mt-6 text-4xl font-semibold leading-[1.04] tracking-[-0.02em] sm:text-5xl lg:text-[3.4rem]">
           Your whole machine,<br />in one repository.
         </h1>
         <p class="mt-6 max-w-md text-[15px] leading-relaxed text-ink-soft">
-          <span class="font-mono text-ink">ubuntu_setup</span> is an opinionated
-          baseline for technical users who want a clean, reproducible workstation.
-          Clone it, run <span class="font-mono text-ubuntu-ink">./setup/bootstrap.sh</span>,
-          and be done — no ansible, no chef, no yak-shaving.
+          <span class="font-mono text-ink">ubuntu_setup</span> turns a fresh
+          Ubuntu install into a workstation that's beautiful, keyboard-driven,
+          private, and hardened — in one command. Clone it, run
+          <span class="font-mono text-ubuntu-ink">./setup/bootstrap.sh</span>,
+          and be done.
         </p>
 
         <div class="mt-8 max-w-lg">
@@ -95,6 +125,40 @@ const claims = [
             </div>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The five commitments ─────────────────────────────── -->
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.6fr]">
+        <div class="lg:sticky lg:top-24 lg:self-start">
+          <p class="eyebrow">What it stands for</p>
+          <h2 class="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Five commitments.
+          </h2>
+          <p class="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-soft">
+            Not a pile of features — a point of view about what a working
+            machine should be. Every default traces back to one of these.
+          </p>
+        </div>
+
+        <ul class="border-t border-line">
+          {
+            commitments.map((c) => (
+              <li class="grid grid-cols-[auto_1fr] gap-x-5 border-b border-line py-6 sm:gap-x-8 sm:py-7">
+                <span class="font-mono text-sm text-ubuntu">{c.n}</span>
+                <div>
+                  <h3 class="text-lg font-semibold tracking-tight">{c.title}</h3>
+                  <p class="mt-1.5 max-w-lg text-sm leading-relaxed text-ink-soft">
+                    {c.body}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
@@ -165,24 +229,24 @@ const claims = [
     </div>
   </section>
 
-  <!-- ── Framework ────────────────────────────────────────── -->
+  <!-- ── Framework / hardware ─────────────────────────────── -->
   <section class="border-b border-line">
     <div class="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
       <div>
-        <p class="eyebrow tick">Hardware-aware</p>
+        <p class="eyebrow tick">Framework-first, runs anywhere</p>
         <h2 class="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Tuned for Framework, at home anywhere.
+          Built for Framework. At home on anything.
         </h2>
         <p class="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
-          The bootstrap detects Framework 13 and 16 mainboards and applies the
-          small fixes that make Ubuntu feel right: fingerprint reader, suspend
-          behaviour, and fractional scaling. On other hardware it simply skips
-          those steps — the rest installs the same.
+          On a Framework 13 or 16 the bootstrap configures the fingerprint
+          reader and the deepest suspend state for real all-day battery. On any
+          other machine those steps skip — the power tuning, privacy, and
+          hardening all install the same.
         </p>
         <ul class="prose mt-6 max-w-md">
-          <li>Power and suspend tuned for daily-driver battery life.</li>
-          <li>HiDPI and fractional scaling set sensibly out of the box.</li>
-          <li>Everything guarded behind a hardware check — safe to run anywhere.</li>
+          <li>powertop auto-tuning on every boot, for more work per charge.</li>
+          <li>Fingerprint reader set up on Framework; skipped elsewhere.</li>
+          <li>Every hardware step guarded by a check — safe on any x86_64 device.</li>
         </ul>
       </div>
 
@@ -193,11 +257,12 @@ const claims = [
         <dl class="divide-y divide-line font-mono text-[13px]">
           {
             [
-              ['os', 'Ubuntu 24.04 LTS'],
-              ['kernel', '6.11 · linux'],
-              ['shell', 'bash + tmux'],
+              ['os', 'Ubuntu 26.04 LTS'],
+              ['kernel', '7.x · linux'],
+              ['shell', 'bash + herdr'],
               ['runtimes', 'mise'],
-              ['device', 'Framework 13 / 16'],
+              ['firewall', 'ufw · active'],
+              ['device', 'Framework · any x86_64'],
             ].map(([k, v]) => (
               <div class="flex items-center justify-between px-6 py-3.5">
                 <dt class="text-ink-faint">{k}</dt>
@@ -217,8 +282,9 @@ const claims = [
         <p class="eyebrow">A baseline, not a cage</p>
         <p class="mt-6 text-2xl font-medium leading-[1.4] tracking-[-0.01em] sm:text-[1.75rem]">
           This isn't a framework to learn or a config to fight. It's a
-          <span class="text-ubuntu-ink">starting line</span> — sane defaults in
-          plain files, laid out so you can read every one and change anything.
+          <span class="text-ubuntu-ink">starting line</span> — sane, private
+          defaults in plain files, laid out so you can read every one and change
+          anything.
         </p>
         <p class="mt-6 text-[15px] leading-relaxed text-ink-soft">
           The docs walk through what each piece does and how to make it yours.
@@ -250,7 +316,7 @@ const claims = [
             </h2>
             <p class="mt-3 max-w-md text-sm leading-relaxed text-white/60">
               Point it at a clean Ubuntu machine and let it run. Come back to a
-              workstation that already feels like yours.
+              workstation that's private, hardened, and already feels like yours.
             </p>
           </div>
           <div class="flex gap-3">

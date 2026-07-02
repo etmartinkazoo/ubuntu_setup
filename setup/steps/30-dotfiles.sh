@@ -5,9 +5,9 @@ source "${SETUP_LIB:?run via bootstrap.sh}/common.sh"
 log "dotfiles"
 
 # repo path  →  home target
-link_file "$DOTFILES_DIR/bashrc"         "$HOME/.bashrc"
-link_file "$DOTFILES_DIR/profile"        "$HOME/.profile"
-link_file "$DOTFILES_DIR/tmux.conf"      "$HOME/.tmux.conf"
+link_file "$DOTFILES_DIR/bashrc"          "$HOME/.bashrc"
+link_file "$DOTFILES_DIR/profile"         "$HOME/.profile"
+link_file "$DOTFILES_DIR/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 link_file "$DOTFILES_DIR/bash/aliases.sh" "$HOME/.config/ubuntu_setup/aliases.sh"
 
 # git identity is personal — write a local config that the tracked gitconfig

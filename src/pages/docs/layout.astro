@@ -24,13 +24,16 @@ import { href } from '../../lib/site';
     │   │   └── common.sh       <span class="tok-comment"># logging, symlink, backup helpers</span>
     │   └── steps/
     │       ├── 10-apt.sh
+    │       ├── 25-herdr.sh
     │       ├── 20-mise.sh
     │       ├── 30-dotfiles.sh
-    │       └── 40-framework.sh
+    │       ├── 40-privacy.sh   <span class="tok-comment"># turn off calls home</span>
+    │       ├── 50-hardening.sh <span class="tok-comment"># firewall, updates, sysctl</span>
+    │       └── 60-power.sh     <span class="tok-comment"># battery + framework fixes</span>
     ├── dotfiles/
     │   ├── bashrc              <span class="tok-comment"># → ~/.bashrc</span>
     │   ├── bash/aliases.sh     <span class="tok-comment"># sourced by bashrc</span>
-    │   ├── tmux.conf           <span class="tok-comment"># → ~/.tmux.conf</span>
+    │   ├── herdr/config.toml   <span class="tok-comment"># → ~/.config/herdr/config.toml</span>
     │   └── gitconfig           <span class="tok-comment"># → ~/.gitconfig</span>
     ├── src/                    <span class="tok-comment"># this website (Astro)</span>
     └── README.md
@@ -51,9 +54,9 @@ import { href } from '../../lib/site';
     back when it symlinks:
   </p>
   <Code>
-    dotfiles/bashrc      →  ~/.bashrc
-    dotfiles/tmux.conf   →  ~/.tmux.conf
-    dotfiles/gitconfig   →  ~/.gitconfig
+    dotfiles/bashrc            →  ~/.bashrc
+    dotfiles/herdr/config.toml →  ~/.config/herdr/config.toml
+    dotfiles/gitconfig         →  ~/.gitconfig
   </Code>
   <p>
     Because they're symlinks, editing the file in the repo updates your live

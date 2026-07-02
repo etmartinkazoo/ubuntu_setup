@@ -5,7 +5,8 @@
 #
 # Usage:
 #   ./setup/bootstrap.sh              run every step (idempotent)
-#   ./setup/bootstrap.sh --only NAME  run one step (apt|mise|dotfiles|framework)
+#   ./setup/bootstrap.sh --only NAME  run one step (apt|herdr|mise|dotfiles|
+#                                      privacy|hardening|power)
 #   ./setup/bootstrap.sh --verify     check the environment, change nothing
 #   ./setup/bootstrap.sh --restore    relink your most recent backed-up dotfiles
 #   ./setup/bootstrap.sh --help
@@ -19,16 +20,19 @@ set -euo pipefail
 SETUP_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/lib" && pwd)"
 source "$SETUP_LIB/common.sh"
 
-usage() { sed -n '3,20p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '3,16p' "$0" | sed 's/^#\s\?//'; }
 
 # ── step registry ─────────────────────────────────────────────────
 declare -A STEP=(
   [apt]="10-apt.sh"
+  [herdr]="25-herdr.sh"
   [mise]="20-mise.sh"
   [dotfiles]="30-dotfiles.sh"
-  [framework]="40-framework.sh"
+  [privacy]="40-privacy.sh"
+  [hardening]="50-hardening.sh"
+  [power]="60-power.sh"
 )
-ORDER=(apt mise dotfiles framework)
+ORDER=(apt herdr mise dotfiles privacy hardening power)
 
 run_step() {
   local name="$1"
@@ -55,12 +59,17 @@ preflight() {
 do_verify() {
   local fail=0
   log "verify"
-  for t in git tmux curl mise; do
+  for t in git herdr curl mise ufw; do
     if have "$t"; then ok "$t"; else warn "$t missing"; fail=1; fi
   done
-  for f in .bashrc .tmux.conf .gitconfig; do
+  for f in .bashrc .gitconfig .config/herdr/config.toml; do
     if [ -L "$HOME/$f" ]; then ok "~/$f linked"; else warn "~/$f not linked"; fail=1; fi
   done
+  if have ufw && sudo ufw status 2>/dev/null | grep -q "Status: active"; then
+    ok "firewall active"
+  else
+    warn "firewall not active"; fail=1
+  fi
   if is_framework; then info "hardware: $(framework_model)"; fi
   echo
   [ "$fail" -eq 0 ] && ok "environment matches the repo" || die "environment is incomplete — run ./setup/bootstrap.sh"

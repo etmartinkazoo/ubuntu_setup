@@ -12,7 +12,7 @@ import { href } from '../../lib/site';
 >
   <h2 id="prerequisites">Prerequisites</h2>
   <ul>
-    <li>Ubuntu 24.04 LTS (a fresh install is ideal, but not required).</li>
+    <li>Ubuntu 26.04 LTS (a fresh install is ideal, but not required).</li>
     <li>An internet connection and your <code>sudo</code> password.</li>
     <li><code>git</code> and <code>curl</code> — present on a default Ubuntu desktop; the bootstrap installs them if not.</li>
   </ul>
@@ -35,10 +35,12 @@ import { href } from '../../lib/site';
   <Code caption="setup/bootstrap.sh — stages">
     <span class="tok-prompt">→</span> preflight   check OS, sudo, network
     <span class="tok-prompt">→</span> apt         install the curated package set
-    <span class="tok-prompt">→</span> mise        install runtime manager + node/ruby/python
-    <span class="tok-prompt">→</span> dotfiles    symlink bash, tmux, git into <span class="tok-comment">$HOME</span>
-    <span class="tok-prompt">→</span> framework   apply hardware fixes <span class="tok-comment"># skipped on other devices</span>
-    <span class="tok-prompt">→</span> verify      re-check everything is in place
+    <span class="tok-prompt">→</span> herdr       install the terminal multiplexer
+    <span class="tok-prompt">→</span> mise        runtimes: node, ruby, python
+    <span class="tok-prompt">→</span> dotfiles    symlink bash, herdr, git into <span class="tok-comment">$HOME</span>
+    <span class="tok-prompt">→</span> privacy     disable telemetry and phone-home
+    <span class="tok-prompt">→</span> hardening   firewall, auto-updates, sysctl
+    <span class="tok-prompt">→</span> power       battery tuning + framework fixes
   </Code>
   <p>
     Each stage is a separate file under <code>setup/steps/</code>. You can read
@@ -55,7 +57,7 @@ import { href } from '../../lib/site';
   <Code>
     <span class="tok-comment"># your original files are never deleted</span>
     ~/.dotfiles-backup/2026-07-02T14-22-08/.bashrc
-    ~/.dotfiles-backup/2026-07-02T14-22-08/.tmux.conf
+    ~/.dotfiles-backup/2026-07-02T14-22-08/config.toml
   </Code>
 
   <h2 id="unattended">Unattended installs</h2>

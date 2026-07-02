@@ -7,7 +7,7 @@ import { href } from '../../lib/site';
 <Docs
   title="Introduction"
   eyebrow="Documentation"
-  summary="ubuntu_setup is a single repository that turns a fresh Ubuntu install into a workstation you can actually work on — in one command."
+  summary="ubuntu_setup is a single repository that turns a fresh Ubuntu 26.04 install into a workstation that's beautiful, keyboard-driven, private, and hardened — in one command."
 >
   <p>
     Most dotfiles projects ask you to trust a wall of shell you can't read, or
@@ -19,12 +19,14 @@ import { href } from '../../lib/site';
   <p>
     It's built for technical users — people who live in a terminal, run their
     own machines, and would rather own their configuration than inherit
-    someone else's magic. If that's you, this is a baseline worth starting from.
+    someone else's magic. Out of the box it disables Ubuntu's phone-home
+    telemetry, brings up a firewall, and tunes the machine for battery. If
+    that's the machine you want, this is a baseline worth starting from.
   </p>
 
   <h2 id="the-one-command">The one command</h2>
   <p>
-    On a clean Ubuntu 24.04 machine, this is the entire installation:
+    On a clean Ubuntu 26.04 machine, this is the entire installation:
   </p>
   <div class="not-prose my-6">
     <CopyCommand command="git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh" />
@@ -35,10 +37,20 @@ import { href } from '../../lib/site';
     backing them up.
   </p>
 
-  <h2 id="principles">Principles</h2>
+  <h2 id="commitments">The five commitments</h2>
+  <p>Every default in the repo traces back to one of these:</p>
+  <ul>
+    <li><strong>Beautiful.</strong> A terminal worth looking at — herdr themes, a considered prompt, sensible colours.</li>
+    <li><strong>Keyboard-driven.</strong> herdr panes and vim-style navigation keep your hands on the home row.</li>
+    <li><strong>Private.</strong> Telemetry, crash reporting, and connectivity pings are turned off on the first run.</li>
+    <li><strong>Hardened.</strong> A default-deny firewall, automatic security updates, and kernel hardening.</li>
+    <li><strong>Efficient.</strong> Kernel 7, powertop auto-tuning, and fast native tools for real all-day battery.</li>
+  </ul>
+
+  <h2 id="principles">How it's built</h2>
   <ul>
     <li><strong>Plain files over abstractions.</strong> No DSL, no framework. If you know bash, you already know how this works.</li>
-    <li><strong>One repository.</strong> Your shell, editor, multiplexer, and packages all live and version together.</li>
+    <li><strong>One repository.</strong> Your shell, multiplexer, packages, and system policy all live and version together.</li>
     <li><strong>Idempotent and reversible.</strong> Run it as many times as you like. Every replaced file is backed up first.</li>
     <li><strong>A baseline, not a cage.</strong> It's meant to be forked and edited — not adopted wholesale and left untouched.</li>
   </ul>
@@ -46,10 +58,11 @@ import { href } from '../../lib/site';
   <h2 id="who-its-for">Who it's for</h2>
   <p>
     It assumes you're comfortable on the command line and want opinionated
-    defaults to build on, not a beginner-friendly GUI installer. It's tuned for
-    <strong>Framework 13 and 16 laptops</strong> running Ubuntu, but the
-    hardware-specific steps are guarded behind a check — run it on any Ubuntu
-    machine and those steps simply skip.
+    defaults to build on, not a beginner-friendly GUI installer. It's built
+    around <strong>Framework 13 and 16 laptops</strong>, but the
+    hardware-specific steps are guarded behind a check — run it on any x86_64
+    Ubuntu machine and those steps simply skip while everything else installs
+    the same.
   </p>
 
   <h2 id="next">Next</h2>

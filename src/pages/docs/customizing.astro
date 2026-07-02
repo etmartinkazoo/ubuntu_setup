@@ -30,7 +30,7 @@ import { href } from '../../lib/site';
   <p>
     Because the dotfiles are symlinked, editing a file under
     <code>dotfiles/</code> changes your live configuration immediately — no
-    re-run needed. Add an alias, change your tmux prefix, tune your prompt:
+    re-run needed. Add an alias, change your herdr prefix, tune your prompt:
   </p>
   <Code caption="dotfiles/bash/aliases.sh">
     <span class="tok-comment"># add your own — takes effect on the next shell</span>
@@ -62,7 +62,7 @@ import { href } from '../../lib/site';
     configuring a service — drop a new file in and pick a number for its place
     in the order:
   </p>
-  <Code caption="setup/steps/50-fonts.sh">
+  <Code caption="setup/steps/70-fonts.sh">
     <span class="tok-comment">#!/usr/bin/env bash</span>
     source <span class="tok-flag">"$SETUP_LIB/common.sh"</span>
 

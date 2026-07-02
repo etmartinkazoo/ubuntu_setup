@@ -1,0 +1,47 @@
+# ~/.config/herdr/config.toml — managed by ubuntu_setup
+# herdr is a keyboard-driven, agent-aware terminal multiplexer.
+# See every option with:  herdr --default-config
+# Docs: https://herdr.dev/docs/configuration/
+
+# Skip the first-run walkthrough on new machines.
+onboarding = false
+
+[update]
+channel = "stable"
+# Privacy: no automatic "is there a new version?" call home. Update on your
+# own terms with `herdr update`.
+version_check = false
+
+[terminal]
+shell_mode = "auto"
+new_cwd = "follow"      # new panes open in the current pane's directory
+
+[theme]
+# Beautiful in both lights — a light theme by day, a dark one by night.
+name = "vesper"
+auto_switch = true
+light_name = "rose-pine-dawn"
+dark_name = "vesper"
+
+[theme.custom]
+accent = "#e95420"      # Ubuntu orange
+
+[keys]
+# Screen-style prefix — keeps ctrl+b free and matches long-standing muscle memory.
+prefix = "ctrl+a"
+
+# vim-style pane focus
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# splits, tabs, and the essentials
+split_vertical = "prefix+v"
+split_horizontal = "prefix+minus"
+new_tab = "prefix+c"
+next_tab = "prefix+n"
+previous_tab = "prefix+p"
+copy_mode = "prefix+["
+zoom = "prefix+z"
+workspace_picker = "prefix+w"
