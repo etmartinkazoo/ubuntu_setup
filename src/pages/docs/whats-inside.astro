@@ -1,0 +1,95 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import Code from '../../components/Code.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="What's inside"
+  eyebrow="Documentation · Reference"
+  summary="Every tool and default the bootstrap configures, and why it's there."
+>
+  <p>
+    Nothing here is a surprise. This page is the complete inventory — if the
+    bootstrap touches it, it's listed below.
+  </p>
+
+  <h2 id="shell">bash</h2>
+  <p>
+    The interactive shell gets safety rails and a handful of aliases that pay
+    for themselves daily. Destructive commands prompt before they act:
+  </p>
+  <Code caption="dotfiles/bash/aliases.sh">
+    <span class="tok-comment"># guard against fat-fingered destruction</span>
+    alias rm=<span class="tok-flag">'rm -I'</span>
+    alias cp=<span class="tok-flag">'cp -i'</span>
+    alias mv=<span class="tok-flag">'mv -i'</span>
+
+    <span class="tok-comment"># commit + push in one move: gp "message" branch</span>
+    gp() {'{'} git add . && git commit -m <span class="tok-flag">"$1"</span> && git push origin <span class="tok-flag">"$2"</span>; {'}'}
+  </Code>
+  <ul>
+    <li><code>ll</code>, <code>la</code>, <code>l</code> — the usual <code>ls</code> shorthands, with colour.</li>
+    <li><code>gp "msg" branch</code> — stage, commit, and push in one command.</li>
+    <li>History that ignores duplicates and appends across sessions.</li>
+  </ul>
+
+  <h2 id="tmux">tmux</h2>
+  <p>
+    A terminal multiplexer configured for people who keep many panes open. The
+    prefix is <code>C-a</code>, panes navigate like vim, and the mouse works:
+  </p>
+  <Code caption="dotfiles/tmux.conf — highlights">
+    set -g prefix C-a           <span class="tok-comment"># screen-style prefix</span>
+    bind | split-window -h      <span class="tok-comment"># intuitive splits</span>
+    bind - split-window -v
+    bind h select-pane -L       <span class="tok-comment"># vim pane navigation</span>
+    set -g mouse on
+    set -g history-limit 50000  <span class="tok-comment"># deep scrollback</span>
+  </Code>
+
+  <h2 id="runtimes">mise</h2>
+  <p>
+    Language runtimes are managed by <a href="https://mise.jdx.dev">mise</a> —
+    one tool for node, ruby, and python, with per-project versions pinned in a
+    <code>.mise.toml</code>. No more juggling nvm, rbenv, and pyenv.
+  </p>
+  <Code>
+    <span class="tok-prompt">$</span> mise use node@lts    <span class="tok-comment"># pin a runtime for this project</span>
+    <span class="tok-prompt">$</span> mise install         <span class="tok-comment"># install everything a repo asks for</span>
+  </Code>
+
+  <h2 id="git">git &amp; gh</h2>
+  <p>
+    Git ships with sensible defaults and uses the
+    <a href="https://cli.github.com">GitHub CLI</a> as its credential helper, so
+    you authenticate once with <code>gh auth login</code> and never paste a token
+    again. Your name and email are prompted for on first run.
+  </p>
+
+  <h2 id="packages">apt packages</h2>
+  <p>
+    A curated set of command-line tools, installed in one pass. The list lives
+    in a plain text file you can edit before running:
+  </p>
+  <Code caption="setup/packages.txt">
+    build-essential    <span class="tok-comment"># compilers and make</span>
+    ripgrep fd-find    <span class="tok-comment"># fast search</span>
+    jq                 <span class="tok-comment"># JSON on the command line</span>
+    htop               <span class="tok-comment"># process viewer</span>
+    tmux git curl      <span class="tok-comment"># the essentials</span>
+  </Code>
+
+  <h2 id="framework">Framework fixes</h2>
+  <p>
+    When the bootstrap detects a Framework 13 or 16 mainboard, it applies a
+    small set of tweaks for suspend behaviour, the fingerprint reader, and
+    fractional scaling. On any other hardware, this stage is skipped entirely —
+    it's guarded behind a device check, so the repo is safe to run anywhere.
+  </p>
+
+  <p>
+    For where each of these lives on disk, see
+    <a href={href('/docs/layout/')}>Repository layout</a>.
+  </p>
+</Docs>

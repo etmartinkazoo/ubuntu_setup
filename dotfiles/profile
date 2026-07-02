@@ -1,0 +1,11 @@
+# ~/.profile — managed by ubuntu_setup
+# Executed by login shells. Sources ~/.bashrc when running under bash.
+
+if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi
+
+# Include the user's private bin directories if they exist.
+[ -d "$HOME/bin" ]        && PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+export PATH

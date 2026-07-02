@@ -1,0 +1,215 @@
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────────────────────
+   ubuntu_setup — design tokens
+   Light spec-sheet. Charcoal ink. One orange moment. Radius 0.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* surfaces */
+  --color-paper: #f6f5f3;
+  --color-panel: #fbfaf9;
+  --color-ink: #1a1917;
+  --color-ink-soft: #57534e;
+  --color-ink-faint: #8b867e;
+
+  /* the one orange */
+  --color-ubuntu: #e95420;
+  --color-ubuntu-ink: #c33d0f;
+
+  /* structure */
+  --color-line: #e4e2dd;
+  --color-line-strong: #d5d2cb;
+
+  /* radius: none, everywhere */
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-full: 0px;
+
+  --spacing-rail: 15rem;
+}
+
+@layer base {
+  * {
+    border-radius: 0 !important;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-ubuntu);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ubuntu);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  /* the eyebrow label — mono, tracked, quiet */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    font-weight: 500;
+  }
+
+  /* orange tick that precedes a label */
+  .tick::before {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.55rem;
+    background: var(--color-ubuntu);
+    vertical-align: baseline;
+  }
+
+  /* body prose inside docs */
+  .prose {
+    color: var(--color-ink-soft);
+    line-height: 1.72;
+    font-size: 0.9375rem;
+  }
+  .prose > * + * {
+    margin-top: 1.1rem;
+  }
+  .prose h2 {
+    color: var(--color-ink);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 3rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    scroll-margin-top: 5rem;
+  }
+  .prose h3 {
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    scroll-margin-top: 5rem;
+  }
+  .prose a {
+    color: var(--color-ubuntu-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .prose strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    background: #efeee9;
+    border: 1px solid var(--color-line);
+    padding: 0.05rem 0.35rem;
+    color: var(--color-ink);
+  }
+  .prose ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose ul > li {
+    position: relative;
+    padding-left: 1.35rem;
+  }
+  .prose ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 0.4rem;
+    height: 1px;
+    background: var(--color-ubuntu);
+  }
+  .prose ul > li + li {
+    margin-top: 0.6rem;
+  }
+
+  /* a fenced code block (pre) */
+  .codeblock {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    background: var(--color-ink);
+    color: #e9e7e2;
+    border: 1px solid var(--color-ink);
+    padding: 1.15rem 1.35rem;
+    overflow-x: auto;
+  }
+  .codeblock .tok-comment {
+    color: #8b867e;
+  }
+  .codeblock .tok-prompt {
+    color: var(--color-ubuntu);
+    user-select: none;
+  }
+  .codeblock .tok-flag {
+    color: #d9b48a;
+  }
+}
+
+/* blinking caret — the one orange moment */
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background: var(--color-ubuntu);
+  transform: translateY(0.18em);
+  animation: caret 1.05s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .caret {
+    opacity: 1;
+  }
+}

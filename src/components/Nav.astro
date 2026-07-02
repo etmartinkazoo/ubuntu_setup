@@ -1,0 +1,48 @@
+---
+import { href, nav, REPO_URL } from '../lib/site';
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+function isActive(path: string) {
+  const target = `${base}${path}`.replace(/\/$/, '') || '/';
+  if (target === base || target === '/') return current === (base || '/');
+  return current.startsWith(target);
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <a href={href('/')} class="group flex items-center gap-2.5">
+      <span class="inline-block h-3 w-3 bg-ubuntu"></span>
+      <span class="font-mono text-sm font-medium tracking-tight">
+        ubuntu_setup
+      </span>
+    </a>
+
+    <nav class="flex items-center gap-1">
+      {
+        nav.map((item) => (
+          <a
+            href={href(item.path)}
+            class:list={[
+              'px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors',
+              isActive(item.path)
+                ? 'text-ink'
+                : 'text-ink-faint hover:text-ink',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={REPO_URL}
+        class="ml-2 flex items-center gap-2 border border-line-strong px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper"
+      >
+        GitHub
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>

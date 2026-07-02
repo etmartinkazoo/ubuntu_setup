@@ -1,0 +1,104 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
+import Code from '../../components/Code.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="Customizing"
+  eyebrow="Documentation · Make it yours"
+  summary="This is a baseline, not a doctrine. The whole point is that you change it. Here's how to do that cleanly."
+>
+  <p>
+    Treat this repo the way you'd treat any other: <strong>fork it</strong>, make
+    it your own, and pull your version onto every machine you own. The defaults
+    are opinions worth starting from — not rules you have to keep.
+  </p>
+
+  <h2 id="fork">Start by forking</h2>
+  <p>
+    Fork <code>etmartinkazoo/ubuntu_setup</code> on GitHub, then clone your fork
+    instead of the original. Now your changes have a home and every machine you
+    provision pulls the same version:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="git clone https://github.com/YOUR-NAME/ubuntu_setup.git" />
+  </div>
+
+  <h2 id="edit-dotfiles">Editing dotfiles</h2>
+  <p>
+    Because the dotfiles are symlinked, editing a file under
+    <code>dotfiles/</code> changes your live configuration immediately — no
+    re-run needed. Add an alias, change your tmux prefix, tune your prompt:
+  </p>
+  <Code caption="dotfiles/bash/aliases.sh">
+    <span class="tok-comment"># add your own — takes effect on the next shell</span>
+    alias k=<span class="tok-flag">'kubectl'</span>
+    alias dc=<span class="tok-flag">'docker compose'</span>
+  </Code>
+  <p>Then commit the change to your fork so it follows you everywhere.</p>
+
+  <h2 id="packages">Changing packages</h2>
+  <p>
+    The apt list is just text. Add or remove a line in
+    <code>setup/packages.txt</code> and re-run the bootstrap — it installs the
+    additions and leaves everything else alone:
+  </p>
+  <Code caption="setup/packages.txt">
+    ripgrep
+    fd-find
+    neovim        <span class="tok-comment"># ← added</span>
+    <span class="tok-comment"># htop        ← commented out; won't be installed</span>
+  </Code>
+  <div class="not-prose my-6">
+    <CopyCommand command="./setup/bootstrap.sh" />
+  </div>
+
+  <h2 id="steps">Adding a step</h2>
+  <p>
+    Each stage of the installer is a numbered file under
+    <code>setup/steps/</code>. To add your own — say, installing a font or
+    configuring a service — drop a new file in and pick a number for its place
+    in the order:
+  </p>
+  <Code caption="setup/steps/50-fonts.sh">
+    <span class="tok-comment">#!/usr/bin/env bash</span>
+    source <span class="tok-flag">"$SETUP_LIB/common.sh"</span>
+
+    log <span class="tok-flag">"installing nerd fonts"</span>
+    <span class="tok-comment"># ... your commands, using the shared helpers ...</span>
+  </Code>
+  <p>
+    The helpers in <code>lib/common.sh</code> (<code>log</code>,
+    <code>link_file</code>, <code>have</code>) are available to every step, so
+    your additions get the same logging and backup behaviour as the built-ins.
+  </p>
+
+  <h2 id="run-one">Running a single step</h2>
+  <p>
+    While iterating, you don't have to run the whole bootstrap. Invoke one stage
+    on its own:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="./setup/bootstrap.sh --only dotfiles" />
+  </div>
+
+  <h2 id="staying-current">Staying current with upstream</h2>
+  <p>
+    If you want to keep pulling improvements from the original repo, add it as a
+    remote and merge selectively. Because everything is plain files, conflicts
+    are readable and resolve like any other code review:
+  </p>
+  <Code>
+    <span class="tok-prompt">$</span> git remote add upstream https://github.com/etmartinkazoo/ubuntu_setup.git
+    <span class="tok-prompt">$</span> git fetch upstream
+    <span class="tok-prompt">$</span> git merge upstream/main
+  </Code>
+
+  <p>
+    Done experimenting and want to walk it back? See
+    <a href={href('/docs/uninstalling/')}>Uninstalling</a> — every original file
+    was backed up, so reverting is clean.
+  </p>
+</Docs>

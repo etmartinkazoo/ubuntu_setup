@@ -1,0 +1,38 @@
+---
+interface Props {
+  command: string;
+  prompt?: boolean;
+}
+const { command, prompt = true } = Astro.props;
+---
+
+<div class="copy-command flex items-stretch border border-line-strong bg-panel" data-command={command}>
+  <code class="flex-1 overflow-x-auto whitespace-nowrap px-4 py-3 font-mono text-[13px] text-ink">
+    {prompt && <span class="select-none text-ubuntu">$ </span>}{command}
+  </code>
+  <button
+    type="button"
+    class="copy-btn flex shrink-0 items-center gap-1.5 border-l border-line-strong px-4 font-mono text-[11px] uppercase tracking-wider text-ink-soft transition-colors hover:bg-ink hover:text-paper"
+    aria-label="Copy command to clipboard"
+  >
+    <span class="copy-label">Copy</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.copy-command').forEach((el) => {
+    const btn = el.querySelector<HTMLButtonElement>('.copy-btn');
+    const label = el.querySelector<HTMLElement>('.copy-label');
+    const cmd = el.dataset.command ?? '';
+    btn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(cmd);
+        if (label) label.textContent = 'Copied';
+        setTimeout(() => label && (label.textContent = 'Copy'), 1400);
+      } catch {
+        if (label) label.textContent = 'Failed';
+        setTimeout(() => label && (label.textContent = 'Copy'), 1400);
+      }
+    });
+  });
+</script>

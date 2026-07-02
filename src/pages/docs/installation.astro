@@ -1,0 +1,83 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
+import Code from '../../components/Code.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="Installation"
+  eyebrow="Documentation · Start"
+  summary="From a clean Ubuntu install to a working prompt. About three minutes, most of it apt."
+>
+  <h2 id="prerequisites">Prerequisites</h2>
+  <ul>
+    <li>Ubuntu 24.04 LTS (a fresh install is ideal, but not required).</li>
+    <li>An internet connection and your <code>sudo</code> password.</li>
+    <li><code>git</code> and <code>curl</code> — present on a default Ubuntu desktop; the bootstrap installs them if not.</li>
+  </ul>
+
+  <h2 id="install">Install</h2>
+  <p>Clone the repository and run the bootstrap:</p>
+  <div class="not-prose my-6">
+    <CopyCommand command="git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh" />
+  </div>
+  <p>
+    The script asks for your password once (for <code>apt</code>), then runs
+    unattended. When it finishes, restart your shell or open a new terminal:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="exec bash" />
+  </div>
+
+  <h2 id="what-happens">What happens, in order</h2>
+  <p>The bootstrap runs a fixed sequence of small, self-contained steps:</p>
+  <Code caption="setup/bootstrap.sh — stages">
+    <span class="tok-prompt">→</span> preflight   check OS, sudo, network
+    <span class="tok-prompt">→</span> apt         install the curated package set
+    <span class="tok-prompt">→</span> mise        install runtime manager + node/ruby/python
+    <span class="tok-prompt">→</span> dotfiles    symlink bash, tmux, git into <span class="tok-comment">$HOME</span>
+    <span class="tok-prompt">→</span> framework   apply hardware fixes <span class="tok-comment"># skipped on other devices</span>
+    <span class="tok-prompt">→</span> verify      re-check everything is in place
+  </Code>
+  <p>
+    Each stage is a separate file under <code>setup/steps/</code>. You can read
+    any of them before running, or run one on its own — see
+    <a href={href('/docs/customizing/')}>Customizing</a>.
+  </p>
+
+  <h2 id="idempotent">Safe to re-run</h2>
+  <p>
+    The bootstrap is idempotent. Run it again after pulling updates and it only
+    applies what's changed. Before replacing any existing dotfile, it moves your
+    current copy to a timestamped backup:
+  </p>
+  <Code>
+    <span class="tok-comment"># your original files are never deleted</span>
+    ~/.dotfiles-backup/2026-07-02T14-22-08/.bashrc
+    ~/.dotfiles-backup/2026-07-02T14-22-08/.tmux.conf
+  </Code>
+
+  <h2 id="unattended">Unattended installs</h2>
+  <p>
+    For provisioning a machine without prompts, set <code>ASSUME_YES=1</code>.
+    This accepts defaults and skips interactive confirmations:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="ASSUME_YES=1 ./setup/bootstrap.sh" />
+  </div>
+
+  <h2 id="verify">Verify</h2>
+  <p>
+    Re-run the verification stage at any time to confirm your environment
+    matches the repo:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="./setup/bootstrap.sh --verify" />
+  </div>
+  <p>
+    From here, see <a href={href('/docs/whats-inside/')}>What's inside</a> for
+    the full inventory, or <a href={href('/docs/customizing/')}>Customizing</a>
+    to make it yours.
+  </p>
+</Docs>

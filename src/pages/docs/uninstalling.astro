@@ -1,0 +1,68 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
+import Code from '../../components/Code.astro';
+---
+
+<Docs
+  title="Uninstalling"
+  eyebrow="Documentation · Make it yours"
+  summary="Nothing here is a one-way door. Every file it replaced was backed up first, and reverting is a single command."
+>
+  <p>
+    Because the dotfiles are symlinks and every original was preserved before
+    being replaced, removing <strong>ubuntu_setup</strong> is clean and
+    predictable. There's no uninstaller database and no global state to
+    untangle.
+  </p>
+
+  <h2 id="restore">Restore your originals</h2>
+  <p>
+    Before replacing any file, the bootstrap moved your existing copy into a
+    timestamped backup directory. The restore command relinks the most recent
+    backups back into place:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="./setup/bootstrap.sh --restore" />
+  </div>
+  <p>Or do it by hand — the backups are just files:</p>
+  <Code>
+    <span class="tok-prompt">$</span> ls ~/.dotfiles-backup/
+    2026-07-02T14-22-08/
+
+    <span class="tok-prompt">$</span> cp ~/.dotfiles-backup/2026-07-02T14-22-08/.bashrc ~/.bashrc
+  </Code>
+
+  <h2 id="remove-links">Remove the symlinks</h2>
+  <p>
+    If you'd rather start from a bare home directory, remove the symlinks the
+    setup created. They all point back into the repo, so it's easy to tell them
+    apart from real files:
+  </p>
+  <Code>
+    <span class="tok-prompt">$</span> ls -l ~/.tmux.conf
+    ~/.tmux.conf -> ~/ubuntu_setup/dotfiles/tmux.conf   <span class="tok-comment"># a symlink</span>
+
+    <span class="tok-prompt">$</span> rm ~/.tmux.conf   <span class="tok-comment"># removes only the link, never the repo</span>
+  </Code>
+
+  <h2 id="packages">Packages</h2>
+  <p>
+    The bootstrap installs apt packages but deliberately never removes them —
+    uninstalling software you might depend on is exactly the kind of surprise
+    this project avoids. If you want a package gone, remove it explicitly:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="sudo apt remove ripgrep" />
+  </div>
+
+  <h2 id="delete">Delete the repo</h2>
+  <p>
+    Once your originals are restored and the symlinks are gone, the repository
+    itself is inert — delete it whenever you like:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="rm -rf ~/ubuntu_setup" />
+  </div>
+  <p>That's the whole footprint. No trace left behind.</p>
+</Docs>

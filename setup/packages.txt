@@ -1,0 +1,24 @@
+# apt packages installed by setup/steps/10-apt.sh
+# One per line. Blank lines and lines starting with # are ignored.
+# Edit freely — re-running the bootstrap installs additions and leaves the rest.
+
+# ── build & core ──────────────────────────────────────────────
+build-essential
+git
+curl
+wget
+ca-certificates
+
+# ── terminal ──────────────────────────────────────────────────
+tmux
+bash-completion
+
+# ── search & inspect ──────────────────────────────────────────
+ripgrep
+fd-find
+jq
+tree
+htop
+
+# ── misc quality of life ──────────────────────────────────────
+unzip

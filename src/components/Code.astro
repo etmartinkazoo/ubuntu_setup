@@ -1,0 +1,15 @@
+---
+// Minimal fenced code block. Pass raw text via the default slot.
+interface Props {
+  caption?: string;
+}
+const { caption } = Astro.props;
+const raw = await Astro.slots.render('default');
+// strip the wrapping <p>/whitespace Astro may add around slotted text
+const text = raw.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '').trim();
+---
+
+<figure class="not-prose my-6">
+  {caption && <figcaption class="mb-2 font-mono text-[11px] uppercase tracking-wider text-ink-faint">{caption}</figcaption>}
+  <pre class="codeblock"><code set:html={text} /></pre>
+</figure>

@@ -1,0 +1,53 @@
+---
+import { href, REPO_URL, REPO } from '../lib/site';
+---
+
+<footer class="border-t border-line">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="grid grid-cols-2 gap-8 border-b border-line py-12 md:grid-cols-4">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2.5">
+          <span class="inline-block h-3 w-3 bg-ubuntu"></span>
+          <span class="font-mono text-sm font-medium">ubuntu_setup</span>
+        </div>
+        <p class="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">
+          An opinionated Ubuntu baseline for power users on Framework laptops.
+          Clone it, run one script, own it.
+        </p>
+      </div>
+
+      <div>
+        <p class="eyebrow">Documentation</p>
+        <ul class="mt-4 space-y-2.5 text-sm text-ink-soft">
+          <li><a class="hover:text-ubuntu-ink" href={href('/docs/')}>Introduction</a></li>
+          <li><a class="hover:text-ubuntu-ink" href={href('/docs/installation/')}>Installation</a></li>
+          <li><a class="hover:text-ubuntu-ink" href={href('/docs/whats-inside/')}>What's inside</a></li>
+          <li><a class="hover:text-ubuntu-ink" href={href('/docs/customizing/')}>Customizing</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow">Project</p>
+        <ul class="mt-4 space-y-2.5 text-sm text-ink-soft">
+          <li><a class="hover:text-ubuntu-ink" href={REPO_URL}>Repository</a></li>
+          <li><a class="hover:text-ubuntu-ink" href={`${REPO_URL}/blob/main/setup/bootstrap.sh`}>bootstrap.sh</a></li>
+          <li><a class="hover:text-ubuntu-ink" href={`${REPO_URL}/issues`}>Issues</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow">Environment</p>
+        <ul class="mt-4 space-y-2.5 font-mono text-xs text-ink-soft">
+          <li>Ubuntu 24.04 LTS</li>
+          <li>Framework 13 / 16</li>
+          <li>bash · tmux · mise</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2 py-6 font-mono text-xs text-ink-faint md:flex-row md:items-center md:justify-between">
+      <span>{REPO} — MIT licensed</span>
+      <span>Not affiliated with Canonical or Framework Computer.</span>
+    </div>
+  </div>
+</footer>

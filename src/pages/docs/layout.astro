@@ -1,0 +1,75 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import Code from '../../components/Code.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="Repository layout"
+  eyebrow="Documentation · Reference"
+  summary="Where everything lives. The whole repo is meant to be read — there's no generated or hidden state."
+>
+  <p>
+    The structure is deliberately flat and legible. Configuration lives under
+    <code>dotfiles/</code>, the installer lives under <code>setup/</code>, and
+    the marketing and docs site (the pages you're reading) lives alongside them.
+  </p>
+
+  <Code caption="ubuntu_setup/">
+    ubuntu_setup/
+    ├── setup/
+    │   ├── bootstrap.sh        <span class="tok-comment"># the one entry point</span>
+    │   ├── packages.txt        <span class="tok-comment"># apt package list — edit freely</span>
+    │   ├── lib/
+    │   │   └── common.sh       <span class="tok-comment"># logging, symlink, backup helpers</span>
+    │   └── steps/
+    │       ├── 10-apt.sh
+    │       ├── 20-mise.sh
+    │       ├── 30-dotfiles.sh
+    │       └── 40-framework.sh
+    ├── dotfiles/
+    │   ├── bashrc              <span class="tok-comment"># → ~/.bashrc</span>
+    │   ├── bash/aliases.sh     <span class="tok-comment"># sourced by bashrc</span>
+    │   ├── tmux.conf           <span class="tok-comment"># → ~/.tmux.conf</span>
+    │   └── gitconfig           <span class="tok-comment"># → ~/.gitconfig</span>
+    ├── src/                    <span class="tok-comment"># this website (Astro)</span>
+    └── README.md
+  </Code>
+
+  <h2 id="setup">setup/</h2>
+  <ul>
+    <li><code>bootstrap.sh</code> — the single entry point. It sources <code>lib/common.sh</code>, then runs each file in <code>steps/</code> in order.</li>
+    <li><code>packages.txt</code> — the apt package list, one per line. Comments with <code>#</code> are ignored. Edit this before running to change what's installed.</li>
+    <li><code>steps/</code> — numbered stages. The prefix sets the order; each file is standalone and re-runnable.</li>
+    <li><code>lib/common.sh</code> — shared shell functions: <code>log</code>, <code>link_file</code> (with backup), and <code>have</code> (command detection).</li>
+  </ul>
+
+  <h2 id="dotfiles">dotfiles/</h2>
+  <p>
+    Each file here maps to a target in your home directory. The naming drops the
+    leading dot so the files are visible in the repo; the dotfiles step adds it
+    back when it symlinks:
+  </p>
+  <Code>
+    dotfiles/bashrc      →  ~/.bashrc
+    dotfiles/tmux.conf   →  ~/.tmux.conf
+    dotfiles/gitconfig   →  ~/.gitconfig
+  </Code>
+  <p>
+    Because they're symlinks, editing the file in the repo updates your live
+    config immediately — and <code>git status</code> shows exactly what you've
+    changed from the baseline.
+  </p>
+
+  <h2 id="site">src/</h2>
+  <p>
+    The website is a standard Astro project and is completely independent of the
+    setup — you can delete it in your fork if you only want the dotfiles. It's
+    included so the project can document and market itself from the same repo.
+  </p>
+
+  <p>
+    Next: <a href={href('/docs/customizing/')}>Customizing</a> covers how to
+    change any of this safely.
+  </p>
+</Docs>

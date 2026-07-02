@@ -1,0 +1,61 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
+import { href } from '../../lib/site';
+---
+
+<Docs
+  title="Introduction"
+  eyebrow="Documentation"
+  summary="ubuntu_setup is a single repository that turns a fresh Ubuntu install into a workstation you can actually work on — in one command."
+>
+  <p>
+    Most dotfiles projects ask you to trust a wall of shell you can't read, or
+    to learn a configuration framework before you can change a single alias.
+    <strong>ubuntu_setup</strong> takes the opposite position: everything is a
+    plain file, laid out where you'd expect it, and the whole thing installs
+    with one script you can read top to bottom.
+  </p>
+  <p>
+    It's built for technical users — people who live in a terminal, run their
+    own machines, and would rather own their configuration than inherit
+    someone else's magic. If that's you, this is a baseline worth starting from.
+  </p>
+
+  <h2 id="the-one-command">The one command</h2>
+  <p>
+    On a clean Ubuntu 24.04 machine, this is the entire installation:
+  </p>
+  <div class="not-prose my-6">
+    <CopyCommand command="git clone https://github.com/etmartinkazoo/ubuntu_setup.git && cd ubuntu_setup && ./setup/bootstrap.sh" />
+  </div>
+  <p>
+    The bootstrap is <strong>idempotent</strong> — running it again is safe and
+    only fills in what's missing. It never overwrites your files without first
+    backing them up.
+  </p>
+
+  <h2 id="principles">Principles</h2>
+  <ul>
+    <li><strong>Plain files over abstractions.</strong> No DSL, no framework. If you know bash, you already know how this works.</li>
+    <li><strong>One repository.</strong> Your shell, editor, multiplexer, and packages all live and version together.</li>
+    <li><strong>Idempotent and reversible.</strong> Run it as many times as you like. Every replaced file is backed up first.</li>
+    <li><strong>A baseline, not a cage.</strong> It's meant to be forked and edited — not adopted wholesale and left untouched.</li>
+  </ul>
+
+  <h2 id="who-its-for">Who it's for</h2>
+  <p>
+    It assumes you're comfortable on the command line and want opinionated
+    defaults to build on, not a beginner-friendly GUI installer. It's tuned for
+    <strong>Framework 13 and 16 laptops</strong> running Ubuntu, but the
+    hardware-specific steps are guarded behind a check — run it on any Ubuntu
+    machine and those steps simply skip.
+  </p>
+
+  <h2 id="next">Next</h2>
+  <p>
+    Head to <a href={href('/docs/installation/')}>Installation</a> for the full
+    walkthrough, or jump to <a href={href('/docs/whats-inside/')}>What's inside</a>
+    to see exactly what gets configured.
+  </p>
+</Docs>
